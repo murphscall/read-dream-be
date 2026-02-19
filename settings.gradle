@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'spring-boot-java-template'
+rootProject.name = 'read-dream-be'
 
 include 'core:core-enum'
 include 'core:core-api'
