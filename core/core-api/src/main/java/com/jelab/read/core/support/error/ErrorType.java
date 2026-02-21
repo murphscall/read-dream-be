@@ -16,7 +16,7 @@ public enum ErrorType {
             LogLevel.WARN),
     INVALID_IMAGE_FILE(HttpStatus.BAD_REQUEST, ErrorCode.E400_INVALID_IMAGE_FILE,
             "올바른 이미지 파일이 아닙니다. (지원 형식: jpeg, png, webp 등)", LogLevel.INFO),
-    IMAGE_FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, ErrorCode.E400_IMAGE_FILE_TOO_LARGE, "이미지 파일의 크기가 너무 큽니다. (10MB 이하)",
+    IMAGE_FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, ErrorCode.E400_IMAGE_FILE_TOO_LARGE, "이미지 파일의 크기가 너무 큽니다. (20MB 이하)",
             LogLevel.INFO);
 
     private final HttpStatus status;
