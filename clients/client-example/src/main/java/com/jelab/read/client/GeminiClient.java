@@ -1,5 +1,6 @@
 package com.jelab.read.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.errors.ClientException;
 import com.google.genai.errors.ServerException;
@@ -7,11 +8,12 @@ import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.genai.types.Part;
-import com.jelab.read.core.enums.Prompt;
+import com.jelab.read.client.dto.GeminiResponseDto;
 import com.jelab.read.client.exception.GeminiClientException;
 import com.jelab.read.client.exception.GeminiQuotaExceededException;
 import com.jelab.read.client.exception.GeminiServerException;
 import com.jelab.read.client.utils.GeminiSchema;
+import com.jelab.read.core.enums.Prompt;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,12 +27,15 @@ public class GeminiClient {
 
     private final Client client;
 
-    public GeminiClient(@Value("${GOOGLE_API_KEY}") String apiKey, @Value("${gemini.version}") String geminiVersion) {
-        this.client = Client.builder().apiKey(apiKey).build();
+    private final ObjectMapper objectMapper;
+
+    public GeminiClient(Client client, @Value("${gemini.version}") String geminiVersion, ObjectMapper objectMapper) {
+        this.client = client;
         this.geminiVersion = geminiVersion;
+        this.objectMapper = objectMapper;
     }
 
-    public String analyzeImage(MultipartFile imageFile) {
+    public GeminiResponseDto analyzeImage(MultipartFile imageFile) {
 
         try {
 
@@ -45,15 +50,12 @@ public class GeminiClient {
                     createAnalysisConfig()
 
             );
-            return contentResponse.text();
-        }
-        catch (ClientException e) {
+            return objectMapper.readValue(contentResponse.text(), GeminiResponseDto.class);
+        } catch (ClientException e) {
             throw geminiErrorsConverter(e);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             throw new GeminiServerException("Gemini Server Error :" + e.getMessage(), e);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new GeminiClientException("Gemini Network Error :" + e.getMessage(), e);
         }
 
@@ -61,10 +63,10 @@ public class GeminiClient {
 
     private GenerateContentConfig createAnalysisConfig() {
         return GenerateContentConfig.builder()
-            .responseMimeType("application/json")
-            .responseSchema(GeminiSchema.ANALYSIS_SCHEMA) // 스키마 클래스 활용
-            .candidateCount(1)
-            .build();
+                .responseMimeType("application/json")
+                .responseSchema(GeminiSchema.ANALYSIS_SCHEMA) // 스키마 클래스 활용
+                .candidateCount(1)
+                .build();
     }
 
     private RuntimeException geminiErrorsConverter(ClientException e) {
