@@ -8,10 +8,10 @@ import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.genai.types.Part;
-import com.jelab.read.client.dto.GeminiResponseDto;
 import com.jelab.read.client.exception.GeminiClientException;
 import com.jelab.read.client.exception.GeminiQuotaExceededException;
 import com.jelab.read.client.exception.GeminiServerException;
+import com.jelab.read.client.model.AiClientResult;
 import com.jelab.read.client.utils.GeminiSchema;
 import com.jelab.read.core.enums.Prompt;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class GeminiClient {
         this.objectMapper = objectMapper;
     }
 
-    public GeminiResponseDto analyzeImage(MultipartFile imageFile) {
+    public AiClientResult analyzeImage(MultipartFile imageFile) {
 
         try {
 
@@ -50,7 +50,11 @@ public class GeminiClient {
                     createAnalysisConfig()
 
             );
-            return objectMapper.readValue(contentResponse.text(), GeminiResponseDto.class);
+
+            GeminiResponseDto dto = objectMapper.readValue(contentResponse.text(), GeminiResponseDto.class);
+
+            return dto.toResult();
+
         } catch (ClientException e) {
             throw geminiErrorsConverter(e);
         } catch (ServerException e) {

@@ -14,9 +14,9 @@ import com.google.genai.errors.ClientException;
 import com.google.genai.errors.ServerException;
 import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentResponse;
-import com.jelab.read.client.dto.GeminiResponseDto;
 import com.jelab.read.client.exception.GeminiQuotaExceededException;
 import com.jelab.read.client.exception.GeminiServerException;
+import com.jelab.read.client.model.AiClientResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,7 +73,7 @@ class GeminiClientTest {
 
         // [When]
         MockMultipartFile file = new MockMultipartFile("img", "test.jpg", "image/jpeg", "data".getBytes());
-        GeminiResponseDto result = geminiClient.analyzeImage(file);
+        AiClientResult result = geminiClient.analyzeImage(file);
 
         // [Then] 3. 실제 파싱된 결과값 검증
         assertThat(result).isNotNull();

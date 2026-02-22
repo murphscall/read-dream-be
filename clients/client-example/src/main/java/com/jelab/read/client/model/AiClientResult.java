@@ -1,8 +1,8 @@
-package com.jelab.read.client.dto;
+package com.jelab.read.client.model;
 
 import java.util.List;
 
-public record GeminiResponseDto(
+public record AiClientResult(
         String status, // "safe", "caution", "danger"
         String summary,
         List<Clause> clauses

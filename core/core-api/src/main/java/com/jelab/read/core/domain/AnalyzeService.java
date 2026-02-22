@@ -1,7 +1,7 @@
 package com.jelab.read.core.domain;
 
 import com.jelab.read.client.GeminiClient;
-import com.jelab.read.client.dto.GeminiResponseDto;
+import com.jelab.read.client.model.AiClientResult;
 import com.jelab.read.core.api.controller.v1.request.AnalyzeRequestDto;
 import com.jelab.read.core.api.controller.v1.response.AnalyzeResponseDto;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ public class AnalyzeService {
 
         AnalysisImage analysisImage = new AnalysisImage(dto.getImageFile());
 
-        GeminiResponseDto geminiResponseDto = geminiClient.analyzeImage(analysisImage.getFile());
+        AiClientResult result = geminiClient.analyzeImage(analysisImage.getFile());
 
         return new AnalyzeResponseDto(
-                geminiResponseDto.status(),
-                geminiResponseDto.summary(),
-                geminiResponseDto.clauses().stream()
+                result.status(),
+                result.summary(),
+                result.clauses().stream()
                         .map(clause -> new AnalyzeResponseDto.Clause(
                                 clause.location(),
                                 clause.original(),
