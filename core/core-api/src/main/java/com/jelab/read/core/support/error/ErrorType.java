@@ -7,7 +7,6 @@ public enum ErrorType {
 
     DEFAULT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.E500, "An unexpected error has occurred.",
             LogLevel.ERROR),
-
     GEMINI_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, ErrorCode.E503_GEMINI_SERVER,
             "AI 서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.", LogLevel.ERROR),
     GEMINI_CLIENT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.E500_GEMINI_CLIENT, "AI 서비스 처리 중 오류가 발생했습니다.",
