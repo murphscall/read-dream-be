@@ -16,7 +16,10 @@ public enum ErrorType {
     INVALID_IMAGE_FILE(HttpStatus.BAD_REQUEST, ErrorCode.E400_INVALID_IMAGE_FILE,
             "올바른 이미지 파일이 아닙니다. (지원 형식: jpeg, png, webp 등)", LogLevel.INFO),
     IMAGE_FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, ErrorCode.E400_IMAGE_FILE_TOO_LARGE, "이미지 파일의 크기가 너무 큽니다. (20MB 이하)",
-            LogLevel.INFO);
+            LogLevel.INFO),
+    GUEST_QUOTA_EXCEEDED(HttpStatus.TOO_MANY_REQUESTS, ErrorCode.E429_GUEST_QUOTA_EXCEEDED,
+            "비회원 일일 이용 횟수(3회)를 모두 사용하셨습니다. 로그인 후 더 많은 혜택을 받아보세요!", LogLevel.INFO);
+
 
     private final HttpStatus status;
 
