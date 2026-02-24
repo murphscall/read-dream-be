@@ -8,10 +8,11 @@ import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.genai.types.Part;
-import com.jelab.read.client.dto.GeminiResponseDto;
 import com.jelab.read.client.exception.GeminiClientException;
+import com.jelab.read.client.exception.GeminiPermissionDeniedException;
 import com.jelab.read.client.exception.GeminiQuotaExceededException;
 import com.jelab.read.client.exception.GeminiServerException;
+import com.jelab.read.client.model.AiClientResult;
 import com.jelab.read.client.utils.GeminiSchema;
 import com.jelab.read.core.enums.Prompt;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class GeminiClient {
         this.objectMapper = objectMapper;
     }
 
-    public GeminiResponseDto analyzeImage(MultipartFile imageFile) {
+    public AiClientResult analyzeImage(MultipartFile imageFile) {
 
         try {
 
@@ -50,15 +51,16 @@ public class GeminiClient {
                     createAnalysisConfig()
 
             );
-            return objectMapper.readValue(contentResponse.text(), GeminiResponseDto.class);
+
+            GeminiResponseDto dto = objectMapper.readValue(contentResponse.text(), GeminiResponseDto.class);
+
+            return dto.toResult();
+
         } catch (ClientException e) {
             throw geminiErrorsConverter(e);
-        } catch (ServerException e) {
+        } catch (ServerException | IOException e) {
             throw new GeminiServerException("Gemini Server Error :" + e.getMessage(), e);
-        } catch (IOException e) {
-            throw new GeminiClientException("Gemini Network Error :" + e.getMessage(), e);
         }
-
     }
 
     private GenerateContentConfig createAnalysisConfig() {
@@ -72,7 +74,7 @@ public class GeminiClient {
     private RuntimeException geminiErrorsConverter(ClientException e) {
         return switch (e.code()) {
             case 429 -> new GeminiQuotaExceededException("Quota exceeded: " + e.getMessage(), e);
-            case 401, 403 -> new GeminiClientException("API Key or Permission Error: " + e.getMessage(), e);
+            case 403 -> new GeminiPermissionDeniedException("API Key or Permission Error: " + e.getMessage(), e);
             default -> new GeminiClientException("Bad Request: " + e.getMessage(), e);
         };
     }

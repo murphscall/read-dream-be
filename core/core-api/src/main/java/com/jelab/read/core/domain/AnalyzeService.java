@@ -1,9 +1,15 @@
 package com.jelab.read.core.domain;
 
 import com.jelab.read.client.GeminiClient;
-import com.jelab.read.client.dto.GeminiResponseDto;
+import com.jelab.read.client.exception.GeminiClientException;
+import com.jelab.read.client.exception.GeminiPermissionDeniedException;
+import com.jelab.read.client.exception.GeminiQuotaExceededException;
+import com.jelab.read.client.exception.GeminiServerException;
+import com.jelab.read.client.model.AiClientResult;
 import com.jelab.read.core.api.controller.v1.request.AnalyzeRequestDto;
 import com.jelab.read.core.api.controller.v1.response.AnalyzeResponseDto;
+import com.jelab.read.core.support.error.CoreException;
+import com.jelab.read.core.support.error.ErrorType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,21 +25,29 @@ public class AnalyzeService {
 
         AnalysisImage analysisImage = new AnalysisImage(dto.getImageFile());
 
-        GeminiResponseDto geminiResponseDto = geminiClient.analyzeImage(analysisImage.getFile());
+        try {
+            AiClientResult result = geminiClient.analyzeImage(analysisImage.getFile());
+            return new AnalyzeResponseDto(
+                    result.status(),
+                    result.summary(),
+                    result.clauses().stream()
+                            .map(clause -> new AnalyzeResponseDto.Clause(
+                                    clause.location(),
+                                    clause.original(),
+                                    clause.translation(),
+                                    clause.tip(),
+                                    clause.risk()
+                            ))
+                            .toList()
+            );
+        } catch (GeminiQuotaExceededException e) {
+            throw new CoreException(ErrorType.GEMINI_QUOTA_EXCEEDED, e.getMessage());
+        } catch (GeminiPermissionDeniedException | GeminiClientException e) {
+            throw new CoreException(ErrorType.GEMINI_CLIENT_ERROR, e.getMessage());
+        } catch (GeminiServerException e) {
+            throw new CoreException(ErrorType.GEMINI_SERVER_ERROR, e.getMessage());
+        }
 
-        return new AnalyzeResponseDto(
-                geminiResponseDto.status(),
-                geminiResponseDto.summary(),
-                geminiResponseDto.clauses().stream()
-                        .map(clause -> new AnalyzeResponseDto.Clause(
-                                clause.location(),
-                                clause.original(),
-                                clause.translation(),
-                                clause.tip(),
-                                clause.risk()
-                        ))
-                        .toList()
-        );
     }
 
 }

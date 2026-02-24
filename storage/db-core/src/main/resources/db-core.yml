@@ -81,6 +81,7 @@ storage:
       connection-timeout: 1100
       keepalive-time: 30000
       validation-timeout: 1000
+
       max-lifetime: 600000
       pool-name: core-db-pool
       data-source-properties:
