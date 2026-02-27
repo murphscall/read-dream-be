@@ -1,4 +1,4 @@
-package com.jelab.read.client.model;
+package com.jelab.read.client.ai.model;
 
 import java.util.List;
 

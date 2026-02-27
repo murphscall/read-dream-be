@@ -1,11 +1,11 @@
 package com.jelab.read.core.domain;
 
-import com.jelab.read.client.GeminiClient;
-import com.jelab.read.client.exception.GeminiClientException;
-import com.jelab.read.client.exception.GeminiPermissionDeniedException;
-import com.jelab.read.client.exception.GeminiQuotaExceededException;
-import com.jelab.read.client.exception.GeminiServerException;
-import com.jelab.read.client.model.AiClientResult;
+import com.jelab.read.client.ai.GeminiClient;
+import com.jelab.read.client.ai.exception.GeminiClientException;
+import com.jelab.read.client.ai.exception.GeminiPermissionDeniedException;
+import com.jelab.read.client.ai.exception.GeminiQuotaExceededException;
+import com.jelab.read.client.ai.exception.GeminiServerException;
+import com.jelab.read.client.ai.model.AiClientResult;
 import com.jelab.read.core.api.controller.v1.request.AnalyzeRequestDto;
 import com.jelab.read.core.api.controller.v1.response.AnalyzeResponseDto;
 import com.jelab.read.core.support.error.CoreException;

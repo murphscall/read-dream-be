@@ -1,4 +1,4 @@
-package com.jelab.read.client;
+package com.jelab.read.client.ai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
@@ -8,12 +8,12 @@ import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.genai.types.Part;
-import com.jelab.read.client.exception.GeminiClientException;
-import com.jelab.read.client.exception.GeminiPermissionDeniedException;
-import com.jelab.read.client.exception.GeminiQuotaExceededException;
-import com.jelab.read.client.exception.GeminiServerException;
-import com.jelab.read.client.model.AiClientResult;
-import com.jelab.read.client.utils.GeminiSchema;
+import com.jelab.read.client.ai.exception.GeminiClientException;
+import com.jelab.read.client.ai.exception.GeminiPermissionDeniedException;
+import com.jelab.read.client.ai.exception.GeminiQuotaExceededException;
+import com.jelab.read.client.ai.exception.GeminiServerException;
+import com.jelab.read.client.ai.model.AiClientResult;
+import com.jelab.read.client.ai.utils.GeminiSchema;
 import com.jelab.read.core.enums.Prompt;
 import java.io.IOException;
 import java.util.List;

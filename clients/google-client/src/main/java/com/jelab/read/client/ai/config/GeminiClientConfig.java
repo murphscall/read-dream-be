@@ -1,4 +1,4 @@
-package com.jelab.read.client.config;
+package com.jelab.read.client.ai.config;
 
 import com.google.genai.Client;
 import org.springframework.beans.factory.annotation.Value;

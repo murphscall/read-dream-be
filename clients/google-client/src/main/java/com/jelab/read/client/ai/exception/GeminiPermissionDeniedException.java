@@ -1,4 +1,4 @@
-package com.jelab.read.client.exception;
+package com.jelab.read.client.ai.exception;
 
 public class GeminiPermissionDeniedException extends RuntimeException {
 

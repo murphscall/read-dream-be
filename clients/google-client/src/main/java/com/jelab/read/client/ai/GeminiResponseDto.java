@@ -1,6 +1,6 @@
-package com.jelab.read.client;
+package com.jelab.read.client.ai;
 
-import com.jelab.read.client.model.AiClientResult;
+import com.jelab.read.client.ai.model.AiClientResult;
 import java.util.List;
 
 record GeminiResponseDto(

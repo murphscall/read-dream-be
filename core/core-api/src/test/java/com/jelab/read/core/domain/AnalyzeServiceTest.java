@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.jelab.read.client.GeminiClient;
-import com.jelab.read.client.exception.GeminiQuotaExceededException;
+import com.jelab.read.client.ai.GeminiClient;
+import com.jelab.read.client.ai.exception.GeminiQuotaExceededException;
 import com.jelab.read.core.api.controller.v1.request.AnalyzeRequestDto;
 import com.jelab.read.core.support.error.CoreException;
 import com.jelab.read.core.support.error.ErrorType;
