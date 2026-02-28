@@ -2,7 +2,10 @@ package com.jelab.read.core.api.controller;
 
 import com.jelab.read.core.support.error.CoreException;
 import com.jelab.read.core.support.error.ErrorType;
+import com.jelab.read.core.support.error.exception.OAuthLoginException;
 import com.jelab.read.core.support.response.ApiResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ public class ApiControllerAdvice {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+
     @ExceptionHandler(CoreException.class)
     public ResponseEntity<ApiResponse<?>> handleCoreException(CoreException e) {
         switch (e.getErrorType().getLogLevel()) {
@@ -22,6 +26,13 @@ public class ApiControllerAdvice {
             default -> log.info("CoreException : {}", e.getMessage(), e);
         }
         return new ResponseEntity<>(ApiResponse.error(e.getErrorType(), e.getData()), e.getErrorType().getStatus());
+    }
+
+    @ExceptionHandler(OAuthLoginException.class)
+    public void handleOAuthLoginException(OAuthLoginException e, HttpServletResponse response) throws IOException {
+        log.warn("OAuth Login Failed: {}", e.getMessage());
+        String redirectUrl = "http://localhost:3000" + "/login?error=" + e.getMessage();
+        response.sendRedirect(redirectUrl);
     }
 
     @ExceptionHandler(Exception.class)

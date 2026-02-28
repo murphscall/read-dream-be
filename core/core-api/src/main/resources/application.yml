@@ -1,6 +1,11 @@
 spring.application.name: core-api
 spring.profiles.active: local
 
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+  expire-length: 3600000
+
 google:
   client:
     id: ${GOOGLE_CLIENT_ID}
