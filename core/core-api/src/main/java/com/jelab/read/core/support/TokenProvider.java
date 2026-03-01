@@ -2,7 +2,12 @@ package com.jelab.read.core.support;
 
 
 import com.jelab.read.core.enums.SocialType;
+import com.jelab.read.core.support.error.CoreException;
+import com.jelab.read.core.support.error.ErrorType;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
@@ -44,6 +49,22 @@ public class TokenProvider {
 
     public String createRefreshToken() {
         return UUID.randomUUID().toString();
+    }
+
+    public void validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token);
+
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new CoreException(ErrorType.JWT_INVALID, e.getMessage(), e);
+        } catch (ExpiredJwtException e) {
+            throw new CoreException(ErrorType.JWT_EXPIRE, e.getMessage(), e);
+        } catch (UnsupportedJwtException e) {
+            throw new CoreException(ErrorType.JWT_UNSUPPORTED, e.getMessage(), e);
+        }
     }
 
 }

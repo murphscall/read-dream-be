@@ -13,16 +13,23 @@ import org.springframework.web.servlet.ModelAndView;
 public class UsageLimitInterceptor implements HandlerInterceptor {
 
     private final RedisUsageRepository redisUsageRepository;
+    private final TokenProvider tokenProvider;
 
-    public UsageLimitInterceptor(RedisUsageRepository redisUsageRepository) {
+    public UsageLimitInterceptor(RedisUsageRepository redisUsageRepository, TokenProvider tokenProvider) {
         this.redisUsageRepository = redisUsageRepository;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String clientIp = NetworkUtils.getClientIp(request);
 
-        System.out.println("요청 잘옴: " + clientIp);
+        String accessToken = AuthorizationExtractor.extract(request);
+        if (accessToken != null) {
+            tokenProvider.validateToken(accessToken);
+            return true;
+        }
+
+        String clientIp = NetworkUtils.getClientIp(request);
 
         long count = redisUsageRepository.incrementAndGet(clientIp);
 

@@ -18,7 +18,10 @@ public enum ErrorType {
     IMAGE_FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, ErrorCode.E400_IMAGE_FILE_TOO_LARGE, "이미지 파일의 크기가 너무 큽니다. (20MB 이하)",
             LogLevel.INFO),
     GUEST_QUOTA_EXCEEDED(HttpStatus.TOO_MANY_REQUESTS, ErrorCode.E429_GUEST_QUOTA_EXCEEDED,
-            "비회원 일일 이용 횟수(3회)를 모두 사용하셨습니다. 로그인 후 더 많은 혜택을 받아보세요!", LogLevel.INFO);
+            "비회원 일일 이용 횟수(3회)를 모두 사용하셨습니다. 로그인 후 더 많은 혜택을 받아보세요!", LogLevel.INFO),
+    JWT_EXPIRE(HttpStatus.UNAUTHORIZED, ErrorCode.E401_JWT_EXPIRED, "유효하지 않은 토큰입니다.", LogLevel.INFO),
+    JWT_INVALID(HttpStatus.UNAUTHORIZED, ErrorCode.E401_JWT_INVALID, "유효하지 않은 토큰입니다.", LogLevel.WARN),
+    JWT_UNSUPPORTED(HttpStatus.BAD_REQUEST, ErrorCode.E401_JWT_UNSUPPORTED, "잘못된 토큰입니다.", LogLevel.INFO);
 
 
     private final HttpStatus status;

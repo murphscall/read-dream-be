@@ -18,6 +18,12 @@ public class CoreException extends RuntimeException {
         this.data = data;
     }
 
+    public CoreException(ErrorType errorType, String message, Throwable cause) {
+        super(message, cause);
+        this.errorType = errorType;
+        this.data = null;
+    }
+
     public ErrorType getErrorType() {
         return errorType;
     }
