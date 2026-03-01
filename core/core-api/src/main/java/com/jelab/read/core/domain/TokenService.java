@@ -29,7 +29,7 @@ public class TokenService {
     private String generateAndSaveRefreshToken(String socialId) {
         String refreshToken = tokenProvider.createRefreshToken();
 
-        stringRedisTemplate.opsForValue().set("RT:" + socialId, refreshToken, Duration.ofDays(7));
+        stringRedisTemplate.opsForValue().set("RT:" + refreshToken, socialId, Duration.ofDays(7));
 
         return refreshToken;
     }
