@@ -10,6 +10,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
 import java.util.UUID;
 import javax.crypto.SecretKey;
@@ -58,12 +59,15 @@ public class TokenProvider {
                     .build()
                     .parseSignedClaims(token);
 
-        } catch (SecurityException | MalformedJwtException e) {
+        } catch (SecurityException | MalformedJwtException | SignatureException e) {
             throw new CoreException(ErrorType.JWT_INVALID, e.getMessage(), e);
         } catch (ExpiredJwtException e) {
             throw new CoreException(ErrorType.JWT_EXPIRE, e.getMessage(), e);
         } catch (UnsupportedJwtException e) {
             throw new CoreException(ErrorType.JWT_UNSUPPORTED, e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            throw new CoreException(ErrorType.JWT_INVALID,
+                    "JWT tokens strings must contain exactly 2 period characters.", e);
         }
     }
 
