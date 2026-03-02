@@ -29,7 +29,7 @@ public class TokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createAccessToken(String socialId, String email, String name, SocialType socialType) {
+    public String createAccessToken(Long memberId, String email, String name, SocialType socialType) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + validityInMilliseconds);
 
@@ -37,7 +37,7 @@ public class TokenProvider {
                 .header()
                 .type("JWT")
                 .and()
-                .subject(socialId)
+                .subject(String.valueOf(memberId))
                 .claim("email", email)
                 .claim("name", name)
                 .claim("socialType", socialType.toString())

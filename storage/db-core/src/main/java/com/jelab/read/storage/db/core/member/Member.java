@@ -21,7 +21,7 @@ import jakarta.persistence.UniqueConstraint;
 )
 public class Member extends BaseEntity {
 
-    @Column(name = "social_id", nullable = false)
+    @Column(name = "social_id", nullable = false, unique = true)
     private String socialId;
     @Column(name = "email", nullable = false)
     private String email;

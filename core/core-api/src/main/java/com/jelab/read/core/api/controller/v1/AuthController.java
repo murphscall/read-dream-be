@@ -6,13 +6,16 @@ import com.jelab.read.core.domain.dto.LoginResponse;
 import com.jelab.read.core.support.CookieManager;
 import com.jelab.read.core.support.error.exception.OAuthLoginException;
 import com.jelab.read.core.support.response.ApiResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +26,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final CookieManager cookieManager;
+    private final String REFRESH_TOKEN = "refreshToken";
 
     public AuthController(AuthService authService, CookieManager cookieManager) {
         this.authService = authService;
@@ -57,5 +61,20 @@ public class AuthController {
 
         return ResponseEntity.ok(ApiResponse.success(LoginResponse.from(authResult)));
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<?>> refreshToken(
+            @CookieValue(value = REFRESH_TOKEN, required = false) Cookie cookie, HttpServletResponse response) {
+
+        cookieManager.validateRefreshTokenCookie(cookie);
+        AuthResult authResult = authService.refreshAccessTokenWithRefreshToken(cookie.getValue());
+
+        String refreshToken = authResult.getRefreshToken();
+        ResponseCookie newCookie = cookieManager.createRefreshTokenCookie(refreshToken);
+        response.addHeader(HttpHeaders.SET_COOKIE, newCookie.toString());
+
+        return ResponseEntity.ok(ApiResponse.success(LoginResponse.from(authResult)));
+    }
+
 
 }

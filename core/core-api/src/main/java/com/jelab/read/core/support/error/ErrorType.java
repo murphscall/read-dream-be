@@ -21,7 +21,10 @@ public enum ErrorType {
             "비회원 일일 이용 횟수(3회)를 모두 사용하셨습니다. 로그인 후 더 많은 혜택을 받아보세요!", LogLevel.INFO),
     JWT_EXPIRE(HttpStatus.UNAUTHORIZED, ErrorCode.E401_JWT_EXPIRED, "유효하지 않은 토큰입니다.", LogLevel.INFO),
     JWT_INVALID(HttpStatus.UNAUTHORIZED, ErrorCode.E401_JWT_INVALID, "유효하지 않은 토큰입니다.", LogLevel.WARN),
-    JWT_UNSUPPORTED(HttpStatus.BAD_REQUEST, ErrorCode.E401_JWT_UNSUPPORTED, "잘못된 토큰입니다.", LogLevel.INFO);
+    JWT_UNSUPPORTED(HttpStatus.BAD_REQUEST, ErrorCode.E401_JWT_UNSUPPORTED, "잘못된 토큰입니다.", LogLevel.INFO),
+    NOT_EXISTS_COOKIE(HttpStatus.BAD_REQUEST, ErrorCode.E400_NOT_EXISTS_COOKIE, "쿠키가 존재하지 않습니다", LogLevel.INFO),
+    INVALID_NOT_FOUND_USER_TOKEN(HttpStatus.UNAUTHORIZED, ErrorCode.E401_NOT_FOUND_USER_TOKEN, "유효하지 않은 토큰입니다.",
+            LogLevel.WARN);
 
 
     private final HttpStatus status;

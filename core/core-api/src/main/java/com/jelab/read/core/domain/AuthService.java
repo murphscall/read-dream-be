@@ -47,8 +47,21 @@ public class AuthService {
                 socialType
         );
 
-        AuthToken authToken = tokenService.generateAuthToken(member.getSocialId(), member.getEmail(), member.getName(),
+        AuthToken authToken = tokenService.generateAuthToken(member.getId(), member.getEmail(), member.getName(),
                 member.getSocialType());
+
+        return AuthResult.of(authToken, MemberInfo.toDto(member));
+
+    }
+
+
+    public AuthResult refreshAccessTokenWithRefreshToken(String refreshToken) {
+
+        String memberId = tokenService.findSocialIdByRefreshToken(refreshToken);
+        Member member = memberService.findMember(Long.parseLong(memberId));
+
+        AuthToken authToken = tokenService.generateNewAuthTokenAfterVerifyRefreshToken(refreshToken, member.getId(),
+                member.getEmail(), member.getName(), member.getSocialType());
 
         return AuthResult.of(authToken, MemberInfo.toDto(member));
 

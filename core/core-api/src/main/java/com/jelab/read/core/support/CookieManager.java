@@ -1,6 +1,10 @@
 package com.jelab.read.core.support;
 
+import com.jelab.read.core.support.error.CoreException;
+import com.jelab.read.core.support.error.ErrorType;
+import jakarta.servlet.http.Cookie;
 import java.time.Duration;
+import java.util.Objects;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +30,12 @@ public class CookieManager {
                 .path("/")
                 .maxAge(0)
                 .build();
+    }
+
+    public void validateRefreshTokenCookie(Cookie cookie) {
+        if (Objects.isNull(cookie)) {
+            throw new CoreException(ErrorType.NOT_EXISTS_COOKIE);
+        }
     }
 
 }
