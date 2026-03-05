@@ -23,7 +23,7 @@ class AnalysisImageTest {
     void create_NotImage_Fail() {
         MockMultipartFile file = new MockMultipartFile("txt", "test.txt", "text/plain", "data".getBytes());
         assertThatThrownBy(() -> new AnalysisImage(file)).isInstanceOf(CoreException.class)
-                .hasMessage(ErrorType.INVALID_IMAGE_FILE.getMessage());
+            .hasMessage(ErrorType.INVALID_IMAGE_FILE.getMessage());
     }
 
     @Test
@@ -32,10 +32,11 @@ class AnalysisImageTest {
         int twentyMegaBytesPlusOne = 20 * 1024 * 1024 + 1;
         byte[] overSizedData = new byte[twentyMegaBytesPlusOne];
 
-        MockMultipartFile overSizedFile = new MockMultipartFile(
-                "image", "heavy_contract.png", "image/png", overSizedData);
+        MockMultipartFile overSizedFile = new MockMultipartFile("image", "heavy_contract.png", "image/png",
+                overSizedData);
 
         assertThatThrownBy(() -> new AnalysisImage(overSizedFile)).isInstanceOf(CoreException.class)
-                .hasMessage(ErrorType.IMAGE_FILE_TOO_LARGE.getMessage());
+            .hasMessage(ErrorType.IMAGE_FILE_TOO_LARGE.getMessage());
     }
+
 }

@@ -36,8 +36,8 @@ class AnalyzeServiceTest {
 
         when(geminiClient.analyzeImage(any())).thenThrow(GeminiQuotaExceededException.class);
         assertThatThrownBy(() -> analyzeService.processAnalyze(analyzeRequestDto)).isInstanceOf(CoreException.class)
-                .hasMessage(ErrorType.GEMINI_QUOTA_EXCEEDED.getMessage());
-
+            .hasMessage(ErrorType.GEMINI_QUOTA_EXCEEDED.getMessage());
 
     }
+
 }

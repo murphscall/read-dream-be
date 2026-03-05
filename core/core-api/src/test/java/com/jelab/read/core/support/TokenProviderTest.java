@@ -16,9 +16,11 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 class TokenProviderTest {
 
-    private final String secretKeyString = Encoders.BASE64.encode(
-            "test-secret-key-more-than-32-characters-long".getBytes());
+    private final String secretKeyString = Encoders.BASE64
+        .encode("test-secret-key-more-than-32-characters-long".getBytes());
+
     private final long validityInMilliseconds = 3600000; // 1시간
+
     private TokenProvider tokenProvider;
 
     @BeforeEach
@@ -40,9 +42,8 @@ class TokenProviderTest {
         TokenProvider expiredProvider = new TokenProvider(secretKeyString, 0);
         String expiredToken = expiredProvider.createAccessToken(1L, "a@a.com", "name", SocialType.KAKAO);
 
-        assertThatThrownBy(() -> tokenProvider.validateToken(expiredToken))
-                .isInstanceOf(CoreException.class)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.JWT_EXPIRE);
+        assertThatThrownBy(() -> tokenProvider.validateToken(expiredToken)).isInstanceOf(CoreException.class)
+            .hasFieldOrPropertyWithValue("errorType", ErrorType.JWT_EXPIRE);
 
     }
 
@@ -54,7 +55,7 @@ class TokenProviderTest {
         String forgedToken = otherProvider.createAccessToken(1L, "a@a.com", "name", SocialType.KAKAO);
 
         assertThatThrownBy(() -> tokenProvider.validateToken(forgedToken)).isInstanceOf(CoreException.class)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.JWT_INVALID);
+            .hasFieldOrPropertyWithValue("errorType", ErrorType.JWT_INVALID);
 
     }
 
@@ -63,7 +64,7 @@ class TokenProviderTest {
     void validateToken_Malformed() {
         String malformedToken = "invalid.token.structure~~";
         assertThatThrownBy(() -> tokenProvider.validateToken(malformedToken)).isInstanceOf(CoreException.class)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.JWT_INVALID);
+            .hasFieldOrPropertyWithValue("errorType", ErrorType.JWT_INVALID);
     }
 
     @ParameterizedTest

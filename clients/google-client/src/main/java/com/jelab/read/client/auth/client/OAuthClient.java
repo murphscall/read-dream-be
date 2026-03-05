@@ -10,4 +10,5 @@ public interface OAuthClient {
     String getLoginUrl();
 
     OAuthUserResponse getUserProfile(String code);
+
 }

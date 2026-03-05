@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthorizationExtractor {
+
     private static final String BEARER_TYPE = "Bearer ";
 
     public static String extract(HttpServletRequest request) {

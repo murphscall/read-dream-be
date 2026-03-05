@@ -27,24 +27,20 @@ public class AnalyzeService {
 
         try {
             AiClientResult result = geminiClient.analyzeImage(analysisImage.getFile());
-            return new AnalyzeResponseDto(
-                    result.status(),
-                    result.summary(),
-                    result.clauses().stream()
-                            .map(clause -> new AnalyzeResponseDto.Clause(
-                                    clause.location(),
-                                    clause.original(),
-                                    clause.translation(),
-                                    clause.tip(),
-                                    clause.risk()
-                            ))
-                            .toList()
-            );
-        } catch (GeminiQuotaExceededException e) {
+            return new AnalyzeResponseDto(result.status(), result.summary(),
+                    result.clauses()
+                        .stream()
+                        .map(clause -> new AnalyzeResponseDto.Clause(clause.location(), clause.original(),
+                                clause.translation(), clause.tip(), clause.risk()))
+                        .toList());
+        }
+        catch (GeminiQuotaExceededException e) {
             throw new CoreException(ErrorType.GEMINI_QUOTA_EXCEEDED, e.getMessage());
-        } catch (GeminiPermissionDeniedException | GeminiClientException e) {
+        }
+        catch (GeminiPermissionDeniedException | GeminiClientException e) {
             throw new CoreException(ErrorType.GEMINI_CLIENT_ERROR, e.getMessage());
-        } catch (GeminiServerException e) {
+        }
+        catch (GeminiServerException e) {
             throw new CoreException(ErrorType.GEMINI_SERVER_ERROR, e.getMessage());
         }
 

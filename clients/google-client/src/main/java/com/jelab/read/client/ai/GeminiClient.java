@@ -56,19 +56,21 @@ public class GeminiClient {
 
             return dto.toResult();
 
-        } catch (ClientException e) {
+        }
+        catch (ClientException e) {
             throw geminiErrorsConverter(e);
-        } catch (ServerException | IOException e) {
+        }
+        catch (ServerException | IOException e) {
             throw new GeminiServerException("Gemini Server Error :" + e.getMessage(), e);
         }
     }
 
     private GenerateContentConfig createAnalysisConfig() {
         return GenerateContentConfig.builder()
-                .responseMimeType("application/json")
-                .responseSchema(GeminiSchema.ANALYSIS_SCHEMA) // 스키마 클래스 활용
-                .candidateCount(1)
-                .build();
+            .responseMimeType("application/json")
+            .responseSchema(GeminiSchema.ANALYSIS_SCHEMA) // 스키마 클래스 활용
+            .candidateCount(1)
+            .build();
     }
 
     private RuntimeException geminiErrorsConverter(ClientException e) {

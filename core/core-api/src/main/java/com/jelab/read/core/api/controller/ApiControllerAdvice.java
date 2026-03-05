@@ -17,7 +17,6 @@ public class ApiControllerAdvice {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-
     @ExceptionHandler(CoreException.class)
     public ResponseEntity<ApiResponse<?>> handleCoreException(CoreException e) {
         switch (e.getErrorType().getLogLevel()) {
@@ -40,4 +39,5 @@ public class ApiControllerAdvice {
         log.error("Exception : {}", e.getMessage(), e);
         return new ResponseEntity<>(ApiResponse.error(ErrorType.DEFAULT_ERROR), ErrorType.DEFAULT_ERROR.getStatus());
     }
+
 }

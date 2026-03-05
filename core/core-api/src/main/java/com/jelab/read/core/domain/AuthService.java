@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final Map<SocialType, OAuthClient> clients;
+
     private final MemberService memberService;
+
     private final TokenService tokenService;
 
     public AuthService(List<OAuthClient> clientList, MemberService memberService, TokenService tokenService) {
@@ -24,7 +26,6 @@ public class AuthService {
         this.memberService = memberService;
         this.tokenService = tokenService;
     }
-
 
     public String getLoginUrl(String type) {
 
@@ -40,12 +41,8 @@ public class AuthService {
 
         OAuthUserResponse socialUserInfo = client.getUserProfile(code);
 
-        Member member = memberService.findOrCreateMember(
-                socialUserInfo.getSocialId(),
-                socialUserInfo.getEmail(),
-                socialUserInfo.getName(),
-                socialType
-        );
+        Member member = memberService.findOrCreateMember(socialUserInfo.getSocialId(), socialUserInfo.getEmail(),
+                socialUserInfo.getName(), socialType);
 
         AuthToken authToken = tokenService.generateAuthToken(member.getId(), member.getEmail(), member.getName(),
                 member.getSocialType());
@@ -53,7 +50,6 @@ public class AuthService {
         return AuthResult.of(authToken, MemberInfo.toDto(member));
 
     }
-
 
     public AuthResult refreshAccessTokenWithRefreshToken(String refreshToken) {
 
@@ -66,4 +62,5 @@ public class AuthService {
         return AuthResult.of(authToken, MemberInfo.toDto(member));
 
     }
+
 }

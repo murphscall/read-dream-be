@@ -17,17 +17,15 @@ public class MemberService {
 
     @Transactional
     public Member findOrCreateMember(String socialId, String email, String name, SocialType type) {
-        return memberRepository.findBySocialIdAndSocialType(socialId, type)
-                .orElseGet(() -> {
-                    Member newMember = Member.createSocialMember(socialId, email, name, type);
-                    return addMember(newMember);
-                });
+        return memberRepository.findBySocialIdAndSocialType(socialId, type).orElseGet(() -> {
+            Member newMember = Member.createSocialMember(socialId, email, name, type);
+            return addMember(newMember);
+        });
     }
 
     private Member addMember(Member member) {
         return memberRepository.save(member);
     }
-
 
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));

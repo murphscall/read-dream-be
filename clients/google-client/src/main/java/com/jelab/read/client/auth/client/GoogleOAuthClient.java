@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class GoogleOAuthClient implements OAuthClient {
 
     private final GoogleApi googleApi;
+
     private final GoogleAuthApi googleAuthApi;
 
     @Value("${google.client.id}")
@@ -40,11 +41,12 @@ public class GoogleOAuthClient implements OAuthClient {
     @Override
     public String getLoginUrl() {
         return UriComponentsBuilder.fromUriString("https://accounts.google.com/o/oauth2/v2/auth")
-                .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
-                .queryParam("response_type", "code")
-                .queryParam("scope", "email profile")
-                .build().toUriString();
+            .queryParam("client_id", clientId)
+            .queryParam("redirect_uri", redirectUri)
+            .queryParam("response_type", "code")
+            .queryParam("scope", "email profile")
+            .build()
+            .toUriString();
     }
 
     @Override
@@ -57,4 +59,5 @@ public class GoogleOAuthClient implements OAuthClient {
 
         return googleApi.getUserInfo(accessToken);
     }
+
 }

@@ -1,7 +1,9 @@
 package com.jelab.read.core.domain.dto;
 
 public class AuthToken {
+
     private final String accessToken;
+
     private final String refreshToken;
 
     private AuthToken(String accessToken, String refreshToken) {
@@ -20,4 +22,5 @@ public class AuthToken {
     public String getRefreshToken() {
         return refreshToken;
     }
+
 }

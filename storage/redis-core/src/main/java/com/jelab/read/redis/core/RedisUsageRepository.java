@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RedisUsageRepository {
+
     private static final String KEY_PREFIX = "usage:limit:guest:";
+
     private final StringRedisTemplate redisTemplate;
 
     public RedisUsageRepository(final StringRedisTemplate redisTemplate) {
@@ -28,4 +30,5 @@ public class RedisUsageRepository {
 
         return count != null ? count : 0;
     }
+
 }

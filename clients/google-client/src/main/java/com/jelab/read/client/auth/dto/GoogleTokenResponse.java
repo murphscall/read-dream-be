@@ -1,10 +1,15 @@
 package com.jelab.read.client.auth.dto;
 
 public class GoogleTokenResponse {
+
     private String access_token;
+
     private String expires_in;
+
     private String scope;
+
     private String token_type;
+
     private String id_token;
 
     public String getAccess_token() {
@@ -26,4 +31,5 @@ public class GoogleTokenResponse {
     public String getId_token() {
         return id_token;
     }
+
 }

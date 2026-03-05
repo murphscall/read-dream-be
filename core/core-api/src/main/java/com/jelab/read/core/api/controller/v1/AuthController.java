@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
     private final CookieManager cookieManager;
+
     private final String REFRESH_TOKEN = "refreshToken";
 
     public AuthController(AuthService authService, CookieManager cookieManager) {
@@ -43,12 +45,10 @@ public class AuthController {
 
     }
 
-
     @GetMapping("/{socialType}/callback")
     public ResponseEntity<ApiResponse<?>> redirectCallback(@PathVariable("socialType") String socialType,
-                                                           @RequestParam(required = false) String code,
-                                                           @RequestParam(required = false) String error,
-                                                           HttpServletResponse response) {
+            @RequestParam(required = false) String code, @RequestParam(required = false) String error,
+            HttpServletResponse response) {
         if (error != null) {
             throw new OAuthLoginException(error);
         }
@@ -75,6 +75,5 @@ public class AuthController {
 
         return ResponseEntity.ok(ApiResponse.success(LoginResponse.from(authResult)));
     }
-
 
 }

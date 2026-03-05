@@ -10,23 +10,19 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(
-        name = "members",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "UK_SOCIAL_ID_TYPE",
-                        columnNames = {"socialId", "social_type"}
-                )
-        }
-)
+@Table(name = "members", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_SOCIAL_ID_TYPE", columnNames = { "socialId", "social_type" }) })
 public class Member extends BaseEntity {
 
     @Column(name = "social_id", nullable = false, unique = true)
     private String socialId;
+
     @Column(name = "email", nullable = false)
     private String email;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type", nullable = false)
     private SocialType socialType;
@@ -60,4 +56,5 @@ public class Member extends BaseEntity {
     public SocialType getSocialType() {
         return socialType;
     }
+
 }

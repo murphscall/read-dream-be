@@ -26,7 +26,6 @@ public enum ErrorType {
     INVALID_NOT_FOUND_USER_TOKEN(HttpStatus.UNAUTHORIZED, ErrorCode.E401_NOT_FOUND_USER_TOKEN, "유효하지 않은 토큰입니다.",
             LogLevel.WARN);
 
-
     private final HttpStatus status;
 
     private final ErrorCode code;

@@ -45,12 +45,11 @@ class UsageLimitInterceptorTest {
 
         given(redisUsageRepository.incrementAndGet(clientIp)).willReturn(4L);
 
-        assertThatThrownBy(() ->
-                usageLimitInterceptor.preHandle(request, response, handler)
-        )
-                .isInstanceOf(CoreException.class)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.GUEST_QUOTA_EXCEEDED);
-        
+        assertThatThrownBy(() -> usageLimitInterceptor.preHandle(request, response, handler))
+            .isInstanceOf(CoreException.class)
+            .hasFieldOrPropertyWithValue("errorType", ErrorType.GUEST_QUOTA_EXCEEDED);
+
         verify(redisUsageRepository, times(1)).incrementAndGet(clientIp);
     }
+
 }

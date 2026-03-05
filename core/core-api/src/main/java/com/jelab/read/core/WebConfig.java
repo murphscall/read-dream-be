@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     private final UsageLimitInterceptor usageLimitInterceptor;
 
     public WebConfig(final UsageLimitInterceptor usageLimitInterceptor) {
@@ -16,7 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(usageLimitInterceptor)
-                .addPathPatterns("/api/analyze")
-                .excludePathPatterns("/static/**", "/favicon.ico");
+            .addPathPatterns("/api/analyze")
+            .excludePathPatterns("/static/**", "/favicon.ico");
     }
+
 }

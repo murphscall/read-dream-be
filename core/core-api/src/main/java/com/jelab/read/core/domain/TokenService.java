@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TokenService {
+
     private final TokenProvider tokenProvider;
+
     private final StringRedisTemplate stringRedisTemplate;
 
     public TokenService(TokenProvider tokenProvider, StringRedisTemplate stringRedisTemplate) {
@@ -39,15 +41,16 @@ public class TokenService {
 
     public String findSocialIdByRefreshToken(String refreshToken) {
         return Optional.ofNullable(stringRedisTemplate.opsForValue().get("RT:" + refreshToken))
-                .orElseThrow(() -> new CoreException(ErrorType.INVALID_NOT_FOUND_USER_TOKEN));
+            .orElseThrow(() -> new CoreException(ErrorType.INVALID_NOT_FOUND_USER_TOKEN));
     }
 
     @Transactional
     public AuthToken generateNewAuthTokenAfterVerifyRefreshToken(String refreshToken, Long memberId, String email,
-                                                                 String name, SocialType socialType) {
+            String name, SocialType socialType) {
 
         stringRedisTemplate.delete("RT:" + refreshToken);
         return generateAuthToken(memberId, email, name, socialType);
 
     }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class UsageLimitInterceptor implements HandlerInterceptor {
 
     private final RedisUsageRepository redisUsageRepository;
+
     private final TokenProvider tokenProvider;
 
     public UsageLimitInterceptor(RedisUsageRepository redisUsageRepository, TokenProvider tokenProvider) {
@@ -42,7 +43,7 @@ public class UsageLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                           ModelAndView modelAndView) throws Exception {
+            ModelAndView modelAndView) throws Exception {
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
@@ -51,4 +52,5 @@ public class UsageLimitInterceptor implements HandlerInterceptor {
             throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
+
 }

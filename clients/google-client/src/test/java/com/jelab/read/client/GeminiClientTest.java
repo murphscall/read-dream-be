@@ -30,13 +30,18 @@ import org.springframework.mock.web.MockMultipartFile;
 class GeminiClientTest {
 
     private final String VERSION = "gemini-1.5-flash";
+
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Mock
     private Client client;
+
     @Mock
     private Models models; // client.models 가 접근하는 실제 객체 모킹
+
     @Mock
     private GenerateContentResponse mockResponse;
+
     private GeminiClient geminiClient;
 
     @BeforeEach
@@ -48,7 +53,6 @@ class GeminiClientTest {
         // 2. 실제 objectMapper 주입
         geminiClient = new GeminiClient(client, VERSION, objectMapper);
     }
-
 
     @Test
     @DisplayName("성공: 제미니가 준 JSON 응답을 DTO로 변환하여 반환해야 한다")
@@ -96,8 +100,7 @@ class GeminiClientTest {
 
         // [When & Then] 해당 예외가 발생하는지 검증
         MockMultipartFile file = new MockMultipartFile("img", "test.jpg", "image/jpeg", "data".getBytes());
-        assertThatThrownBy(() -> geminiClient.analyzeImage(file))
-                .isInstanceOf(GeminiQuotaExceededException.class);
+        assertThatThrownBy(() -> geminiClient.analyzeImage(file)).isInstanceOf(GeminiQuotaExceededException.class);
     }
 
     @Test
@@ -107,13 +110,12 @@ class GeminiClientTest {
 
         ServerException geminiServerError = mock(ServerException.class);
 
-        when(models.generateContent(anyString(), any(Content.class), any()))
-                .thenThrow(geminiServerError);
+        when(models.generateContent(anyString(), any(Content.class), any())).thenThrow(geminiServerError);
 
         // [When & Then]
         MockMultipartFile file = new MockMultipartFile("img", "test.jpg", "image/jpeg", "data".getBytes());
-        assertThatThrownBy(() -> geminiClient.analyzeImage(file))
-                .isInstanceOf(GeminiServerException.class)
-                .hasMessageContaining("Gemini Server Error");
+        assertThatThrownBy(() -> geminiClient.analyzeImage(file)).isInstanceOf(GeminiServerException.class)
+            .hasMessageContaining("Gemini Server Error");
     }
+
 }

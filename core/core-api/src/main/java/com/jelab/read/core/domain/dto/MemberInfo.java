@@ -4,9 +4,13 @@ import com.jelab.read.core.enums.SocialType;
 import com.jelab.read.storage.db.core.member.Member;
 
 public class MemberInfo {
+
     private final String socialId;
+
     private final String email;
+
     private final String name;
+
     private final SocialType socialType;
 
     private MemberInfo(String socialId, String email, String name, SocialType socialType) {
@@ -39,4 +43,5 @@ public class MemberInfo {
     public SocialType getSocialType() {
         return socialType;
     }
+
 }

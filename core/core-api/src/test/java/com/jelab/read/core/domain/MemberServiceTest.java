@@ -22,11 +22,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class MemberServiceTest {
 
     private final String socialId = "google_12345";
+
     private final String email = "test@gmail.com";
+
     private final String name = "으니몬";
+
     private final SocialType type = SocialType.GOOGLE;
+
     @InjectMocks
     private MemberService memberService;
+
     @Mock
     private MemberRepository memberRepository;
 
@@ -47,11 +52,10 @@ class MemberServiceTest {
     @Test
     @DisplayName("가입된 멤버가 없다면, 새로운 멤버를 생성하고 저장한 뒤 반환한다")
     void findOrCreateMember_WhenNotExists() {
-        when(memberRepository.findBySocialIdAndSocialType(socialId, type))
-                .thenReturn(Optional.empty());
+        when(memberRepository.findBySocialIdAndSocialType(socialId, type)).thenReturn(Optional.empty());
 
         when(memberRepository.save(any(Member.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        
+
         Member result = memberService.findOrCreateMember(socialId, email, name, type);
 
         assertThat(result.getSocialId()).isEqualTo(socialId);
@@ -59,4 +63,5 @@ class MemberServiceTest {
 
         verify(memberRepository, times(1)).save(any(Member.class));
     }
+
 }

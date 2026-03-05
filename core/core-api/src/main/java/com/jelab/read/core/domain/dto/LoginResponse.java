@@ -1,7 +1,9 @@
 package com.jelab.read.core.domain.dto;
 
 public class LoginResponse {
+
     private final String accessToken;
+
     private final MemberInfo memberInfo;
 
     private LoginResponse(String accessToken, MemberInfo memberInfo) {
@@ -23,4 +25,5 @@ public class LoginResponse {
     public MemberInfo getMemberInfo() {
         return memberInfo;
     }
+
 }
